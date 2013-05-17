@@ -1,0 +1,639 @@
+<!DOCTYPE HTML>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/night.css" id="theme">
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+    <!--[if lt IE 9]>
+        <script src="lib/js/html5shiv.js"></script>
+        <![endif]-->
+
+        <style type="text/css">
+        .reveal h1 { font-size: 3em; }
+        .reveal table { border-collapse: collapse; }
+        .reveal table td { border: 1px solid #eee; padding: 15px; text-align: center; vertical-align: middle; }
+        </style>
+
+    </head>
+    <body>
+        <div class="reveal">
+            <div class="slides">
+
+                <section>
+                    <section>
+                        <h1>
+                            jQuery <em>sin jQuery</em>
+                        </h1>
+                        <h3>
+                            Porque hacerlo a pelo es mejor
+                        </h3>
+
+                        <h5 style="margin-top:4em">
+                            José Tomás Tocino - @josetomastocino
+                        </h5>
+                        <h6>
+                            <a href="http://dev.josetomastocino.com">http://dev.josetomastocino.com</a>
+                        </h6>
+                    </section>
+
+                    <section>
+
+                        <img src="img/profile.png" class="profile" alt="" style="width: 400px; border: 0; background-color: transparent;">
+                        <h3>José Tomás Tocino</h3>
+                        <ul>
+                            <li>Ingeniero Téc. Informático</li>
+                            <li>Front-ender</li>
+                            <li>Game developer (más antes que ahora)</li>
+                            <li>Currando en la UCA</li>
+                        </ul>
+                        <h6>
+                            <a href="http://dev.josetomastocino.com">http://dev.josetomastocino.com</a>
+                        </h6>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <blockquote class="twitter-tweet" lang="es"><p>"jQuery is the PHP4 of Javascript"</p><br><a href="https://twitter.com/hipsterhacker/status/95341659365187584">@hipsterhacker</a></blockquote>
+
+                        <p class="fragment">
+                            <a href="http://remysharp.com/2013/04/19/i-know-jquery-now-what">Remy Sharp - I know jQuery, now what?</a>
+                        </p>
+
+                        <p class="fragment">
+                            <a href="http://substack.net/weaning_yourself_off_jquery">Substack - Weaning Yourself Off jQuery</a>
+                        </p>
+                        <p class="fragment">
+                            <a href="http://rmurphey.com/blog/2012/04/12/a-baseline-for-front-end-developers/">Rebecca Murphey - A baseline for front-end developers</a>
+                        </p>
+
+                    </section>
+
+                    <section>
+                        <img src="img/meme-wonka.jpg" alt="">
+                        <img src="img/meme-telling-me.jpg">
+                    </section>
+
+                    <section>
+                        <h2>¿Por qué nació jQuery?</h2>
+
+                        <pre class="fragment"><code class="javascript">var IE4 = (document.all &amp;&amp; !document.getElementById) ? true : false;
+var NS4 = (document.layers) ? true : false;
+var IE5 = (document.all &amp;&amp; document.getElementById) ? true : false;
+var N6 = (document.getElementById &amp;&amp; !document.all) ? true : false;</code></pre>
+
+                        <blockquote class="fragment">
+                            "The Javascript core language <strong>is consistent</strong>. <br>It's the DOM implementations that cause headaches
+                        </blockquote>
+
+                    </section>
+                    <section>
+                        <h2>¿Sigue haciendo falta?</h2>
+                        <div class="fragment">
+                            <h4>Depende</h4>
+                            <ul>
+                                <li>Público objetivo</li>
+                                <li>Nivel de interactividad</li>
+                                <li>Otras restricciones (licencias, peso, etc.)</li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <section>
+                        <img src="img/stack-1.png">
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h4>Introducing...</h4>
+                        <h1>
+                            aPely.js
+                        </h1>
+                        <h4>Como jQuery pero hecho a pelo</h4>
+                    </section>
+
+                    <section>
+                        <h2>Disclaimer</h2>
+                        <p class="fragment">IE8+</p>
+<div class="fragment">
+    <blockquote>
+        Versions 8 and 9 of Internet Explorer contain multiple rendering engines. So even if a site visitor is using IE8 or IE9, it’s possible that they're not using the latest rendering engine their browser contains
+    </blockquote>
+    WAT
+    <pre><code>&lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge,chrome=1&quot;&gt;</code></pre>
+</div>
+                    </section>
+
+                    <section>
+                        <h1>
+                            DOM Primer
+                        </h1>
+                        <h3>Document Object Model</h3>
+
+                        <h5>Representa un documento web mediante <br>una estructura de árbol</h5>
+
+                        <img src="img/dom-tree.gif">
+                    </section>
+
+                    <section>
+                        <h2>Principales tipos de nodo</h2>
+                        <ul>
+                            <li><code>DOCUMENT_NODE</code>: base del documento
+<pre><code>document.nodeType == Node.DOCUMENT_NODE
+true</code></pre>
+                            </li>
+                            <li><code>DOCUMENT_TYPE_NODE</code>: doctype
+<pre><code>document.doctype.nodeType == Node.DOCUMENT_TYPE_NODE
+true</code></pre>                            </li>
+                            <li><code>ELEMENT_NODE</code>: cualquier elemento de la web, incluida la raíz <code>&lt;html&gt;</code>, accesible con <code>document.documentElement</code>:
+<pre><code>document.documentElement.nodeType == Node.ELEMENT_NODE
+true</code></pre>                            </li>
+                            <li><code>TEXT_NODE</code>: contenido de texto plano dentro de otros nodos</li>
+                        </ul>
+
+                    </section>
+
+                    <section>
+                        <h2>Representación en JavaScript</h2>
+
+                        Se incluye un api para trabajar con el <code>DOM</code>.
+
+                        <ul class="fragment">
+                            <li><code>window</code>, objeto global</li>
+                            <li><code>window.document</code>, documento</li>
+                            <li><code>Node</code>, tipo base para todos los nodos</li>
+                            <li><code>Element</code>, tipo base para los ELEMENT_NODE</li>
+                            <li><code>NodeList</code>, lista de nodos, como un array</li>
+                            <li><code>StaticNodeList</code>, lista de nodos en IE8-</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <img src="img/book-cover-dom.jpg" style="width: 50%" alt="">
+                        <h3><a href="http://domenlightenment.com/">domEnlightenment.com</a></h3>
+                    </section>
+
+                    <section>
+                        <img src="img/book-cover-good-parts.jpg" style="width: 45%" alt="">
+                        <img src="img/book-cover-patterns.png" style="width: 45%" alt="">
+                    </section>
+                </section>
+
+                <section>
+
+                    <section>
+                        <img src="img/show-me-the-code.jpg" alt="">
+                        <p class="fragment">
+                            Vamos a recorrer las tareas más habituales con jQuery<br> y veremos cómo
+                            hacerlas de forma nativa.
+                        </p>
+                    </section>
+
+<section>
+    <h3>document ready?</h3>
+<pre><code class="javascript">$(function(){
+    /* teh jQuery code */
+});</code></pre>
+
+Se ejecuta cuando el DOM está listo.
+
+<pre><code class="html">&lt;!-- Ponemos el JS al final, e ya --&gt;
+&lt;script&gt;
+    // Nuestro código
+&lt;/script&gt;
+&lt;/body&gt;</code></pre>
+</section>
+
+                    <section>
+                        <h3>
+                            Selección de elementos del DOM
+                        </h3>
+<div class="fragment">
+    jQuery
+<pre><code class="javascript">
+$('#betabeers, .brogrammer');
+
+</code></pre>
+</div>
+
+<div class="fragment">
+JavaScript aPely
+<pre><code class="javascript">
+// Buscar por ID, devuelve Element o null
+document.getElementById('betabeers');
+
+// Buscar por selector CSS, devuelve Element o null
+document.querySelector('#betabeers');
+
+// Buscar por selector CSS, devuelve NodeList (StaticNodeList en IE8)
+document.querySelectorAll('#betabeers, .brogrammer');
+
+</code></pre></div>
+
+                    </section>
+
+
+                    <section>
+                        <h3>
+                            <code>$('#elemento')</code><br>vs<br><code>document.getElementById('elemento')</code>
+                        </h3>
+
+                        <img src="img/jsperf-1.png" alt="">
+                    </section>
+
+                    <section>
+                        <h3>
+                            También funcionan dentro de otros elementos!
+                        </h3>
+
+<pre><code class="javascript">
+// jQuery
+var capa = $('#betabeers');
+var brogrammers = capa.find('.brogrammer');
+
+// aPely
+var miCapa = document.getElementById('betabeers');
+var misBros = miCapa.querySelectorAll('.brogrammer');
+
+</code></pre>
+                    </section>
+
+                    <section>
+                        <h3>
+                            Funciones para casos particulares
+                        </h3>
+                        <p>Muchísimo más rápidas (varios órdenes de magnitud)</p>
+<pre><code class="javascript">
+// Búsqueda por clase
+var misBros = document.getElementsByClassName('brogrammer');
+
+// Búsqueda por etiqueta
+var misScripts = document.getElementTagName('script');
+
+</code></pre>
+                    </section>
+
+                    <section>
+                        <h3>Innauguramos nuestra biblioteca <code>aPely.js</code></h3>
+                            ¿Te gusta el dólar, <em>Rockefeller</em>?
+
+<pre><code class="javascript">
+var $ = function(s){
+  var nodeSet = document.querySelectorAll(s);
+  return nodeSet.length == 1 ? nodeSet[0] : nodeSet;
+};
+
+</code></pre>
+
+Versión one-liner:
+<pre><code class="javascript">
+var $ = document.querySelectorAll.bind(document);
+
+</code></pre>
+                    </section>
+
+                    <section>
+                        <h2>Eventos</h2>
+
+Teh markup:
+<pre><code>
+&lt;button class=&quot;drink-beer-btn&quot;&gt;
+  Drink some beer!
+&lt;/button&gt;
+
+</code></pre>
+
+jQuery
+<pre><code class="javascript">
+$('.drink-beer-btn').on('click', function(e)
+{
+    alert('Yeah, I drink!');
+});
+
+</code></pre>
+                    </section>
+
+                    <section>
+                        <h2>
+                            Eventos
+                        </h2>
+
+                        aPely
+
+                        <pre><code class="javascript">
+// IE9+
+miBoton.addEventListener('click', function(e)
+{
+    alert('Yeah, I drink too!');
+}, false);
+
+// IE8 - Ojo al nombre del evento "on" + "click"
+miBoton.attachEvent('onclick', function(e)
+{
+    alert('Yeah, I drink');
+});
+
+</code></pre>
+                    </section>
+
+                    <section>
+                        <h3>Ampliemos el prototype!</h3>
+                        Cross-browser awesomeness!
+
+<pre><code class="javascript">Element.prototype.on = function(event, callback)
+{
+    if (this.addEventListener) {
+        return this.addEventListener(event, callback, false);
+    } else {
+        return this.attachEvent('on' + event, callback);
+    }
+};
+
+NodeList.prototype.on = function(event, callback)
+{
+    for(var i = 0, max_i = this.length; i &lt; max_i; ++i){
+        this[i].on(event, callback);
+    }
+};
+
+// IE8
+if (window.StaticNodeList)
+  window.StaticNodeList.prototype.on = NodeList.prototype.on;
+</code></pre>
+No es jQuery, es aPely!
+<pre><code class="javascript">$('.drink-beer-btn').on('click', function(event)
+{
+    alert('I drink');
+});
+</code></pre>
+</section>
+
+                    <section>
+                        <h2>
+                            Información de los elementos
+                        </h2>
+
+Una etiqueta HTML tiene <strong>atributos</strong>. Un nodo tiene, además,
+<strong>propiedades</strong> (y métodos). Las propiedades habituales se
+<em>sincronizan</em> con los atributos homónimos.
+
+<pre><code class="javascript">var e = $('input.username');
+
+// Leemos como propiedad
+e.id;
+
+// Leemos como atributo
+e.getAttribute('id');
+
+// Hay propiedades que no tienen atributo, lógicamente
+e.tagName;
+
+// El atributo 'class' es un caso especial
+e.getAttribute('class');
+
+// La propiedad es className
+e.className;
+</code></pre>
+
+                    </section>
+
+                    <section>
+                        <h2>
+                            Contenido de los elementos
+                        </h2>
+HTML
+<pre><code class="javascript">// jQuery
+e.html(contenido);
+
+// aPely
+e.innerHTML = contenido;
+</code></pre>
+
+Texto
+<pre><code class="javascript">// jQuery
+e.text(contenido);
+
+// aPely
+e.textContent = contenido; // Resto
+e.innerText = contenido; // IE
+</code></pre>
+                    </section>
+
+                    <section>
+                        <h2>Crear elementos</h2>
+<pre><code class="javascript">// jQuery
+var nuevoElem = $('&lt;span&gt;');
+
+// aPely
+var nuevoElem = document.createElement('span');
+</code></pre>
+
+Añadiendo el elemento al árbol
+<pre><code class="javascript">// jQuery
+padre.append(nuevoElem);
+
+// aPely
+padre.appendChild(nuevoElem);
+</code></pre>
+
+                    </section>
+
+                    <section>
+                        <h2>Borrar elementos</h2>
+<pre><code class="javascript">// jQuery
+e.remove();
+
+// aPely
+e.parentNode.removeChild(e);
+</code></pre>
+<div class="fragment">
+    Imitemos jQuery...
+<pre><code class="javascript">Element.prototype.remove = function ()
+{
+    this.parentNode.removeChild(this);
+};
+</code></pre>
+</div>
+
+                    </section>
+
+                    <section>
+                        <img src="img/i-give-up.jpg" alt="">
+                    </section>
+
+                    <section><img src="img/chiquito.jpg" alt=""></section>
+
+                    <section>
+                        <h3>CSS!</h3>
+
+                        jQuery
+<pre><code class="javascript">
+$('div').css('color');
+
+</code></pre>
+
+JavaScript aPely
+<pre><code class="javascript">
+var capa = document.querySelector('div');
+
+// Estilos en línea (Lect. y escrit.)
+capa.style.color;
+
+// Todos los estilos (Sólo lect.)
+getComputedStyle(capa).color;
+
+// Todos los estilos (IE&lt;9)
+capa.currentStyle.color;
+</code></pre>
+
+                    </section>
+
+<section>
+    <h3>Ajax!</h3>
+jQuery
+    <pre><code>
+$.ajax({
+    'url' : 'echo.php',
+    'success' : function (datos) {
+        // Procesar datos
+    }
+});
+    </code></pre>
+<div class="fragment">
+JavaScript
+<pre><code class="javascript">
+var request = new XMLHttpRequest();
+
+request.onreadystatechange = function ()
+{
+    if(this.readyState == 4 &amp;&amp; this.status == 200)
+    {
+        var datos = this.responseText;
+    }
+};
+
+request.open('GET', 'echo.php', true);
+request.send(null);</code></pre>
+</div>
+</section>
+                </section>
+
+                <section>
+                    <section>
+                        <h1>Bonus track!</h1>
+                        <h3>Javascript para webs de panaderías, carnicerías and the like</h3>
+
+                        <h5>Porque no todos somos <img src="img/logo-47.png" style="border: 0; vertical-align: middle;background-color: transparent;"></h5>
+                    </section>
+
+                    <section>
+                        <h2>DOM Based Routing</h2>
+
+                        <h4>
+                            <a href="http://paulirish.com/2009/markup-based-unobtrusive-comprehensive-dom-ready-execution/">Paul Irish: DOM Based Routing</a>
+                        </h4>
+
+                        <h4>
+                            <a href="http://viget.com/extend/javascript-execution-patterns-for-non-web-apps">Viget: JavaScript Execution Patterns for Non-Web Apps</a>
+                        </h4>
+
+                    </section>
+
+                    <section>
+                        <img src="img/bonus-1.png" alt="" style="border: 0; background-color: transparent;">
+                    </section>
+
+                    <section>
+                        <h2>¿Meterlo todo en el $(document).ready?</h2>
+
+                        <img src="img/meme-no.jpg" alt="">
+                    </section>
+
+                    <section>
+                        Namespace con las secciones y una parte común:
+
+                        <pre><code class="javascript" style="max-height: 500px">SitioWeb =
+{
+    common :
+    {
+        domReady : function (){
+            // ...
+        },
+
+        windowLoaded : function (){
+            // ...
+        }
+    },
+
+    pagina_tal :
+    {
+        domReady : function (){
+            // ...
+        },
+
+        windowLoaded : function (){
+            // ...
+        }
+    }
+}
+                        </code></pre>
+                    </section>
+
+                    <section>
+                        Creamos nuestro bootloader:
+<pre><code class="javascript" style="max-height: 600px">
+Boot = {
+    __load : function (e, page) {
+        var bodyId = page || document.body.id;
+
+        var namespace = SitioWeb;
+
+        if (namespace[bodyId] &amp;&amp;
+            namespace[bodyId][e] &amp;&amp;
+            typeof namespace[bodyId][e] == 'function')
+        {
+            console.log("Evento '" + e + "' para página '" + bodyId + "'");
+            namespace[bodyId][e]();
+        }
+    },
+
+    domReady : function(){
+        Boot.__load("domReady", "common");
+        Boot.__load("domReady");
+    },
+
+    windowLoaded : function(){
+        Boot.__load("windowLoaded", "common");
+        Boot.__load("windowLoaded");
+    }
+};
+
+$(document).ready(Boot.domReady);
+$(window).load(Boot.windowLoaded);
+
+</code></pre>
+Usado por ejemplo en <a href="http://orsaipad.com">OrsaiPad.com</a>
+                    </section>
+
+                    <section>
+                        <img src="img/thats-all-folks.jpg" alt="" style="border:0">
+                    </section>
+                </section>
+            </div> <!-- .slides -->
+        </div> <!-- .reveal -->
+
+        <script src="lib/js/head.min.js"></script>
+        <script src="js/reveal.js"></script>
+        <script>
+        Reveal.initialize({
+            transition: 'linear',
+            dependencies: [
+            { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+            ]
+        });
+        </script>
+    </body>
+</html>
